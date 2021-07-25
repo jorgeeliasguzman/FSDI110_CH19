@@ -2,6 +2,7 @@ from flask import Flask, abort, request, render_template
 import json
 from data import data
 from flask_cors import CORS
+from config import db, parse_json
 
 app = Flask(__name__)
 CORS(app)
@@ -75,6 +76,11 @@ def get_cheapest():
 
 @app.route("/api/catalog/<category>")
 def get_product_by_category(category):
+    data = db.products.find({ "category": category })
+    results = [item for item in data]
+    return json.dumps(results)
+
+"""""
     # find the products that belong to the category
     results = []
     for prod in products:
@@ -82,9 +88,9 @@ def get_product_by_category(category):
             results.append(prod)
 
     return json.dumps(results)
+"""
 
 
-# HERE
 @app.route("/api/categories")
 def get_categories():
     unique_categories = []
@@ -133,3 +139,14 @@ git add .
 git commit -m "<a message>"
 git push
 """
+
+@app.route("/api/test")
+def test_data_manipulation():
+    test_data = db.test.find({})
+    print(test_data)
+
+    for entry in test_data:
+        print(entry)
+
+    return "check the console"
+

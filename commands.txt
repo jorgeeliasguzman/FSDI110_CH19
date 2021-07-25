@@ -38,3 +38,13 @@ python3 server.py
 
 # deactivate the virtual env
 deactivate
+
+
+
+
+# check status /  start mongoDB services
+sudo service mongoDB status
+sudo service mongoDB start
+
+# Mongo DB <i class="show dbs
+use "database Name
