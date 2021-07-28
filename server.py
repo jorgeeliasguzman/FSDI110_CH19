@@ -78,9 +78,19 @@ def get_cheapest():
 def get_product_by_category(category):
     data = db.products.find({ "category": category })
     results = [item for item in data]
-    return json.dumps(results)
+    return parse_json(results)
 
-"""""
+@app.route("/api/discountCode/<code>")
+def validate_discount(code):
+    data = db.cupoCodes.find({"code": code})
+    for code in data:
+        return parse_json(code)
+    
+    return parse_json({"error": True, "reason": "Invalid Code"})
+
+
+
+"""
     # find the products that belong to the category
     results = []
     for prod in products:
@@ -125,20 +135,6 @@ def test():
     return "check your terminal"
 
 
-#if __name__ == '__main__':
-#    app.run(debug=True)
-
-
-
-#adding cool code that might fix everything... or not
-# another change
-
-# command line:
-"""
-git add .
-git commit -m "<a message>"
-git push
-"""
 
 @app.route("/api/test")
 def test_data_manipulation():
@@ -150,3 +146,25 @@ def test_data_manipulation():
 
     return "check the console"
 
+
+@app.route("/api/populatecodes")
+def test_populate_codes():
+    db.cupoCodes.insert({"code": "qwerty", "discount": 10 })
+    db.cupoCodes.insert({"code": "ploop", "discount": 7 })
+    db.cupoCodes.insert({"code": "cheaper", "discount": 5 })
+    db.cupoCodes.insert({"code": "abab1212", "discount": 95 })
+
+    return "codes registered"
+
+#if __name__ == '__main__':
+#    app.run(debug=True)
+
+#adding cool code that might fix everything... or not
+# another change
+
+# command line:
+"""
+git add .
+git commit -m "<a message>"
+git push
+"""
